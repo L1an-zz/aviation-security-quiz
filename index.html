@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="安检理论题库学习与考试工具">
+  <title>安检理论题库</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <button id="home-button" class="brand" type="button" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true">安</span>
+        <span>
+          <strong>安检理论题库</strong>
+          <small>学习 · 练习 · 测试</small>
+        </span>
+      </button>
+      <span class="privacy-pill">私有题库 · 记录仅存本机</span>
+    </header>
+
+    <main>
+      <section id="home-view" class="view active" aria-labelledby="home-title">
+        <div class="hero">
+          <p class="eyebrow">民航安检理论训练</p>
+          <h1 id="home-title">安检理论题库</h1>
+          <p>完整收录 1461 道题。学习模式逐题反馈，考试模式交卷后统一评分。</p>
+        </div>
+
+        <div class="stats-grid" aria-label="题库统计">
+          <article><strong id="stat-total">1461</strong><span>全部题目</span></article>
+          <article><strong id="stat-single">469</strong><span>单选题</span></article>
+          <article><strong id="stat-multi">678</strong><span>多选题</span></article>
+          <article><strong id="stat-judge">314</strong><span>判断题</span></article>
+        </div>
+
+        <div class="mode-grid">
+          <article class="mode-card study-card">
+            <span class="card-index">01</span>
+            <p class="eyebrow">学习模式</p>
+            <h2>逐题学习，立即核对</h2>
+            <p>按原题号顺序学习，提交答案后立即显示正确答案和选择差异。</p>
+            <label for="study-filter-select">学习范围</label>
+            <select id="study-filter-select">
+              <option value="all">全部题型（1461 题）</option>
+              <option value="single">单选题（469 题）</option>
+              <option value="multi">多选题（678 题）</option>
+              <option value="judge">判断题（314 题）</option>
+            </select>
+            <div class="button-row">
+              <button id="study-mode-button" class="primary-button" type="button">开始学习</button>
+              <button id="continue-study-button" class="secondary-button" type="button">继续上次</button>
+            </div>
+            <button id="wrong-study-button" class="text-button" type="button">复习错题 <span id="wrong-count">0</span></button>
+          </article>
+
+          <article class="mode-card exam-card">
+            <span class="card-index">02</span>
+            <p class="eyebrow">考试模式</p>
+            <h2>随机组卷，交卷评分</h2>
+            <p>自定义三类题目数量。考试过程中不提示答案，交卷后统一分析。</p>
+            <div class="count-grid">
+              <label>单选题<input id="exam-single-count" type="number" min="0" max="469" value="20" inputmode="numeric"></label>
+              <label>多选题<input id="exam-multi-count" type="number" min="0" max="678" value="20" inputmode="numeric"></label>
+              <label>判断题<input id="exam-judge-count" type="number" min="0" max="314" value="20" inputmode="numeric"></label>
+            </div>
+            <div class="button-row">
+              <button id="exam-mode-button" class="primary-button dark" type="button">开始考试</button>
+              <button id="resume-exam-button" class="secondary-button" type="button" hidden>继续考试</button>
+            </div>
+          </article>
+        </div>
+
+        <section class="local-summary" aria-labelledby="local-title">
+          <div>
+            <p class="eyebrow">本机记录</p>
+            <h2 id="local-title">学习进度保存在当前浏览器</h2>
+            <p id="study-summary-text">尚未开始学习。</p>
+            <p id="last-result-text">还没有考试记录。</p>
+          </div>
+          <button id="clear-records-button" class="danger-button" type="button">清空本机记录</button>
+        </section>
+      </section>
+
+      <section id="study-view" class="view" aria-labelledby="study-title" hidden>
+        <div class="quiz-topbar">
+          <div>
+            <p class="eyebrow">学习模式</p>
+            <h2 id="study-title">逐题学习</h2>
+          </div>
+          <button class="exit-button" type="button" data-action="exit-home">退出学习</button>
+        </div>
+        <div class="progress-track"><span id="study-progress-bar"></span></div>
+        <p id="study-progress-text" class="progress-text"></p>
+        <article id="study-question-card" class="question-card"></article>
+        <div id="study-feedback" class="feedback" aria-live="polite" hidden></div>
+        <nav class="quiz-actions" aria-label="学习题目导航">
+          <button id="study-prev-button" class="secondary-button" type="button">上一题</button>
+          <button id="study-check-button" class="primary-button" type="button">查看答案</button>
+          <button id="study-next-button" class="primary-button dark" type="button" disabled>下一题</button>
+        </nav>
+      </section>
+
+      <section id="exam-view" class="view" aria-labelledby="exam-title" hidden>
+        <div class="quiz-topbar">
+          <div>
+            <p class="eyebrow">考试模式</p>
+            <h2 id="exam-title">随机测试</h2>
+          </div>
+          <button class="exit-button" type="button" data-action="exit-home">暂存并退出</button>
+        </div>
+        <div class="progress-track"><span id="exam-progress-bar"></span></div>
+        <div class="progress-line">
+          <p id="exam-progress-text" class="progress-text"></p>
+          <span id="exam-answered-text" class="answered-pill"></span>
+        </div>
+        <article id="exam-question-card" class="question-card"></article>
+        <nav class="quiz-actions" aria-label="考试题目导航">
+          <button id="exam-prev-button" class="secondary-button" type="button">上一题</button>
+          <button id="exam-next-button" class="primary-button" type="button">下一题</button>
+          <button id="submit-exam-button" class="primary-button dark" type="button" hidden>交卷并查看分析</button>
+        </nav>
+      </section>
+
+      <section id="results-view" class="view" aria-labelledby="results-title" hidden>
+        <div class="result-hero">
+          <p class="eyebrow">考试结果</p>
+          <h2 id="results-title">本次测试分析</h2>
+          <div class="score-ring"><strong id="result-accuracy">0%</strong><span>正确率</span></div>
+          <p id="result-summary"></p>
+        </div>
+        <div id="result-type-grid" class="stats-grid compact"></div>
+        <div class="result-heading">
+          <div>
+            <p class="eyebrow">错题分析</p>
+            <h3>逐题核对</h3>
+          </div>
+          <span id="result-mistake-count" class="answered-pill"></span>
+        </div>
+        <div id="results-container" class="mistake-list"></div>
+        <div class="result-actions">
+          <button id="review-result-mistakes-button" class="primary-button" type="button">学习本次错题</button>
+          <button id="restart-exam-button" class="secondary-button" type="button">重新组卷</button>
+          <button class="text-button" type="button" data-action="exit-home">返回首页</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+  </div>
+  <script src="./questions-single.js"></script>
+  <script src="./questions-multi.js"></script>
+  <script src="./questions-judge.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
+
