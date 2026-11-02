@@ -77,16 +77,60 @@ function escapeHtml(value) {
   })[character]);
 }
 
+function bankCounts() {
+  return {
+    all: allQuestions.length,
+    single: bank.single.length,
+    multi: bank.multi.length,
+    judge: bank.judge.length,
+  };
+}
+
+function updateBankLimits() {
+  const counts = bankCounts();
+  $('stat-total').textContent = counts.all;
+  $('stat-single').textContent = counts.single;
+  $('stat-multi').textContent = counts.multi;
+  $('stat-judge').textContent = counts.judge;
+  $('hero-total').textContent = counts.all;
+  const optionLabels = {
+    all: `全部题型（${counts.all} 题）`,
+    single: `单选题（${counts.single} 题）`,
+    multi: `多选题（${counts.multi} 题）`,
+    judge: `判断题（${counts.judge} 题）`,
+  };
+  for (const option of $('study-filter-select').options) {
+    if (optionLabels[option.value]) option.textContent = optionLabels[option.value];
+  }
+  for (const type of types) {
+    const input = $('exam-' + type + '-count');
+    const available = counts[type];
+    input.max = String(available);
+    const requested = Number(state.settings[type]);
+    input.value = String(Math.min(Number.isFinite(requested) ? requested : 0, available));
+  }
+}
+
+function readExamCounts() {
+  const counts = bankCounts();
+  return Object.fromEntries(types.map((type) => {
+    const input = $('exam-' + type + '-count');
+    const available = counts[type];
+    input.max = String(available);
+    const raw = Number(input.value);
+    if (!Number.isInteger(raw) || raw < 0) return [type, raw];
+    const count = Math.min(raw, available);
+    if (count !== raw) input.value = String(count);
+    return [type, count];
+  }));
+}
+
 function updateHome() {
-  $('stat-total').textContent = allQuestions.length;
-  $('stat-single').textContent = bank.single.length;
-  $('stat-multi').textContent = bank.multi.length;
-  $('stat-judge').textContent = bank.judge.length;
+  updateBankLimits();
   $('wrong-count').textContent = state.wrongIds.length;
   $('wrong-study-button').disabled = state.wrongIds.length === 0;
   $('resume-exam-button').hidden = !state.exam;
   $('study-filter-select').value = state.study.filter === 'wrong' ? 'all' : state.study.filter;
-  for (const type of types) $('exam-' + type + '-count').value = state.settings[type];
   const studyFilter = state.study.filter;
   const studyQuestions = questionsForStudy(studyFilter);
   const activeIndex = state.study.active?.filter === studyFilter
@@ -227,7 +271,7 @@ function moveStudy(delta) {
 }
 
 function startExam() {
-  const counts = Object.fromEntries(types.map((type) => [type, Number($('exam-' + type + '-count').value)]));
+  const counts = readExamCounts();
   try {
     const questions = sampleExam(bank, counts);
     state.settings = counts;

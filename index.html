@@ -25,14 +25,14 @@
         <div class="hero">
           <p class="eyebrow">民航安检理论训练</p>
           <h1 id="home-title">安检理论题库</h1>
-          <p>完整收录 1461 道题。学习模式逐题反馈，考试模式交卷后统一评分。</p>
+          <p>完整收录 <span id="hero-total">2716</span> 道题。学习模式逐题反馈，考试模式交卷后统一评分。</p>
         </div>
 
         <div class="stats-grid" aria-label="题库统计">
-          <article><strong id="stat-total">1461</strong><span>全部题目</span></article>
-          <article><strong id="stat-single">469</strong><span>单选题</span></article>
-          <article><strong id="stat-multi">678</strong><span>多选题</span></article>
-          <article><strong id="stat-judge">314</strong><span>判断题</span></article>
+          <article><strong id="stat-total">2716</strong><span>全部题目</span></article>
+          <article><strong id="stat-single">614</strong><span>单选题</span></article>
+          <article><strong id="stat-multi">1470</strong><span>多选题</span></article>
+          <article><strong id="stat-judge">632</strong><span>判断题</span></article>
         </div>
 
         <div class="mode-grid">
@@ -43,10 +43,10 @@
             <p>按原题号顺序学习，提交答案后立即显示正确答案和选择差异。</p>
             <label for="study-filter-select">学习范围</label>
             <select id="study-filter-select">
-              <option value="all">全部题型（1461 题）</option>
-              <option value="single">单选题（469 题）</option>
-              <option value="multi">多选题（678 题）</option>
-              <option value="judge">判断题（314 题）</option>
+              <option value="all">全部题型（2716 题）</option>
+              <option value="single">单选题（614 题）</option>
+              <option value="multi">多选题（1470 题）</option>
+              <option value="judge">判断题（632 题）</option>
             </select>
             <div class="button-row">
               <button id="study-mode-button" class="primary-button" type="button">开始学习</button>
@@ -61,9 +61,9 @@
             <h2>随机组卷，交卷评分</h2>
             <p>自定义三类题目数量。考试过程中不提示答案，交卷后统一分析。</p>
             <div class="count-grid">
-              <label>单选题<input id="exam-single-count" type="number" min="0" max="469" value="20" inputmode="numeric"></label>
-              <label>多选题<input id="exam-multi-count" type="number" min="0" max="678" value="20" inputmode="numeric"></label>
-              <label>判断题<input id="exam-judge-count" type="number" min="0" max="314" value="20" inputmode="numeric"></label>
+              <label>单选题<input id="exam-single-count" type="number" min="0" max="614" value="20" inputmode="numeric"></label>
+              <label>多选题<input id="exam-multi-count" type="number" min="0" max="1470" value="20" inputmode="numeric"></label>
+              <label>判断题<input id="exam-judge-count" type="number" min="0" max="632" value="20" inputmode="numeric"></label>
             </div>
             <div class="button-row">
               <button id="exam-mode-button" class="primary-button dark" type="button">开始考试</button>
